@@ -1,17 +1,18 @@
 {
-  "Category": "",
-  "Description": "",
-  "EngineAssociation": "4.26",
-  "FileVersion": 3,
-  "Modules": [
-    {
-      "AdditionalDependencies": [
-        "Engine",
-        "UMG"
-      ],
-      "LoadingPhase": "Default",
-      "Name": "BCGJam",
-      "Type": "Runtime"
-    }
-  ]
+	"FileVersion": 3,
+	"EngineAssociation": "4.26",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "BCGJam",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"UMG",
+				"AIModule"
+			]
+		}
+	]
 }

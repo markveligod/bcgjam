@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Menu/Public/MSBJDataTypes.h"
 #include "GameJamModeBase.generated.h"
+
+class UMSBJGameInstance;
 
 /**
  * 
@@ -13,5 +16,19 @@ UCLASS()
 class BCGJAM_API AGameJamModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+public:
+	AGameJamModeBase();
+
+	void ChangeGameLevelState(EGameLevelState NewState);
+	FOnGameLevelStateChangedSignature GameLevelState;
 	
+protected:
+	virtual void StartPlay() override;
+	
+private:
+	UMSBJGameInstance* GameInstance;
+	UGameUserSettings* UserSettings;
+	EGameLevelState CurrentGameLevelState = EGameLevelState::WaitToStart;
+	
+	void SetupSettings();
 };

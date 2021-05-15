@@ -22,3 +22,14 @@ enum class EMSBJGameMenuState : uint8
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnGameMenuStateChangedSignature, EMSBJGameMenuState);
 DECLARE_MULTICAST_DELEGATE(FOnStartPlaySettingsSignature);
+
+UENUM(BlueprintType)
+enum class EGameLevelState : uint8
+{
+    WaitToStart = 0,
+    InProgress,
+    Pause
+};
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnGameLevelStateChangedSignature, EGameLevelState);
+
