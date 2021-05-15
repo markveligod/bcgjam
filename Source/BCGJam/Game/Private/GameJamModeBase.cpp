@@ -4,10 +4,13 @@
 #include "Game/Public/GameJamModeBase.h"
 #include "Menu/Public/MSBJGameInstance.h"
 #include "GameFramework/GameUserSettings.h"
+#include "Game/Public/Character/BCGJamBaseCharacter.h"
+#include "Game/Public/Character/BCGJamPlayerController.h"
 
 AGameJamModeBase::AGameJamModeBase()
 {
-	
+	DefaultPawnClass = ABCGJamBaseCharacter::StaticClass();
+	PlayerControllerClass = ABCGJamPlayerController::StaticClass();
 }
 
 void AGameJamModeBase::ChangeGameLevelState(EGameLevelState NewState)
