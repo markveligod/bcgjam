@@ -5,6 +5,7 @@
 #include "Perception/AISense_Sight.h"
 #include "Game/Public/AI/BCGJamAIController.h"
 #include "Game/Public/AI/BCGJamAICharacter.h"
+#include "Game/Public/Character/BCGJamBaseCharacter.h"
 
 AActor* UBCGJamAIPerceptionComponent::GetClossesEnemy()
 {
@@ -23,9 +24,11 @@ AActor* UBCGJamAIPerceptionComponent::GetClossesEnemy()
 	AActor* ResultPawn = nullptr;
 	for (auto TempActor : AllActorSight)
 	{
-		//TODO if actor is dead?
-		//TODO check is player?
-		ResultPawn = TempActor;
+		const auto TempCharacter = Cast<ABCGJamBaseCharacter>(TempActor);
+		if (TempCharacter && TempCharacter->GetIsDead() == false && TempCharacter->GetHiddenInItem() == false)
+		{
+			ResultPawn = TempActor;
+		}
 	}
 	return (ResultPawn);
 }

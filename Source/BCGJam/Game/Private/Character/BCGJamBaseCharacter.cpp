@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Game/Public/Character/Components/HealthActorComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ABCGJamBaseCharacter::ABCGJamBaseCharacter()
@@ -28,6 +29,9 @@ void ABCGJamBaseCharacter::BeginPlay()
 	checkf(this->SpringArmComponent, TEXT("Spring arm is nullptr"));
 	checkf(this->CameraComponent, TEXT("Camera is nullptr"));
 	checkf(this->HealthComponent, TEXT("Health Component is nullptr"));
+
+	this->DefaultValueMaxVelocity = GetCharacterMovement()->GetMaxSpeed();
+
 }
 
 
@@ -47,19 +51,50 @@ void ABCGJamBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	{
 		PlayerInputComponent->BindAxis("MoveForward", this, &ABCGJamBaseCharacter::OnMoveForward);
 		PlayerInputComponent->BindAxis("MoveRight", this, &ABCGJamBaseCharacter::OnMoveRight);
+		PlayerInputComponent->BindAction("Hide", IE_Pressed, this, &ABCGJamBaseCharacter::OnHiddenPlayer);
+		PlayerInputComponent->BindAction("MoveRun", IE_Pressed, this, &ABCGJamBaseCharacter::OnPressMoveRunPlayer);
+		PlayerInputComponent->BindAction("MoveRun", IE_Released, this, &ABCGJamBaseCharacter::OnRealMoveRunPlayer);
 	}
 }
 
 void ABCGJamBaseCharacter::OnMoveForward(float Amount)
 {
-	if (Amount == 0.0f)
+	if (Amount == 0.0f || this->bIsHiddenPlayerInItem)
 		return;
 	AddMovementInput(GetActorForwardVector(), Amount);
 }
 
 void ABCGJamBaseCharacter::OnMoveRight(float Amount)
 {
-	if (Amount == 0.0f)
+	if (Amount == 0.0f || this->bIsHiddenPlayerInItem)
 		return;
 	AddMovementInput(GetActorRightVector(), Amount);
+}
+
+void ABCGJamBaseCharacter::OnHiddenPlayer()
+{
+	if (this->bIsHideItemAround && !this->bIsHiddenPlayerInItem)
+	{
+		this->bIsHiddenPlayerInItem = true;
+		SetActorHiddenInGame(true);
+	}
+	else if (this->bIsHiddenPlayerInItem)
+	{
+		this->bIsHiddenPlayerInItem = false;
+		SetActorHiddenInGame(false);
+	}
+}
+
+void ABCGJamBaseCharacter::OnPressMoveRunPlayer()
+{
+	if (this->bIsHiddenPlayerInItem)
+		return;
+	GetCharacterMovement()->MaxWalkSpeed = this->MaxSpeedRun;
+}
+
+void ABCGJamBaseCharacter::OnRealMoveRunPlayer()
+{
+	if (this->bIsHiddenPlayerInItem)
+		return;
+	GetCharacterMovement()->MaxWalkSpeed = this->DefaultValueMaxVelocity;
 }

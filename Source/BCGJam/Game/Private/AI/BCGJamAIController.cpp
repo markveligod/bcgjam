@@ -39,10 +39,7 @@ void ABCGJamAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	const auto TempEnemy = Cast<AActor>(GetBlackboardComponent()->GetValueAsObject(this->KeyEnemyBlackboard));
-	if (TempEnemy)
-	{
-		SetFocus(TempEnemy);
-	}
+	SetFocus(TempEnemy);
 }
 
 void ABCGJamAIController::OnPossess(APawn* InPawn)
