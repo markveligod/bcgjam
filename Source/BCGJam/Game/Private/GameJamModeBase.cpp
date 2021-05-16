@@ -11,6 +11,7 @@ AGameJamModeBase::AGameJamModeBase()
 {
 	DefaultPawnClass = ABCGJamBaseCharacter::StaticClass();
 	PlayerControllerClass = ABCGJamPlayerController::StaticClass();
+	this->OnGameOver.AddUObject(this, &AGameJamModeBase::OnEndGame);
 }
 
 void AGameJamModeBase::ChangeGameLevelState(EGameLevelState NewState)
@@ -48,4 +49,9 @@ void AGameJamModeBase::SetupSettings()
 	this->UserSettings->SetViewDistanceQuality(this->GameInstance->GetCurrentQualityValue());
 	this->UserSettings->SetVisualEffectQuality(this->GameInstance->GetCurrentQualityValue());
 	this->UserSettings->ApplySettings(false);
+}
+
+void AGameJamModeBase::OnEndGame()
+{
+	this->ChangeGameLevelState(EGameLevelState::GameOver);
 }

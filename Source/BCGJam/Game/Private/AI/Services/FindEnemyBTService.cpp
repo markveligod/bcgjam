@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Game/Public/AI/Components/FindEnemyBTService.h"
+#include "Game/Public/AI/Services/FindEnemyBTService.h"
 
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"

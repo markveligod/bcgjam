@@ -26,6 +26,9 @@ protected:
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Target")
 	TArray<class ABCGJamAITargetPoint*> GeneralTargetPoints;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		class UDamageActorComponent* DamageComponent;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

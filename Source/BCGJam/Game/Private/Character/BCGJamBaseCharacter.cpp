@@ -4,6 +4,7 @@
 #include "Game/Public/Character/BCGJamBaseCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Game/Public/Character/Components/HealthActorComponent.h"
 
 // Sets default values
 ABCGJamBaseCharacter::ABCGJamBaseCharacter()
@@ -16,6 +17,8 @@ ABCGJamBaseCharacter::ABCGJamBaseCharacter()
 
 	this->CameraComponent = CreateDefaultSubobject<UCameraComponent>("Camera");
 	this->CameraComponent->SetupAttachment(this->SpringArmComponent);
+
+	this->HealthComponent = CreateDefaultSubobject<UHealthActorComponent>("Health Component");
 }
 
 // Called when the game starts or when spawned
@@ -24,7 +27,7 @@ void ABCGJamBaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	checkf(this->SpringArmComponent, TEXT("Spring arm is nullptr"));
 	checkf(this->CameraComponent, TEXT("Camera is nullptr"));
-	
+	checkf(this->HealthComponent, TEXT("Health Component is nullptr"));
 }
 
 

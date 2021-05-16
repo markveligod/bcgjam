@@ -5,6 +5,7 @@
 #include "Game/Public/AI/BCGJamAIController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Game/Public/AI/BCGJamAITargetPoint.h"
+#include "Game/Public/AI/Components/DamageActorComponent.h"
 
 // Sets default values
 ABCGJamAICharacter::ABCGJamAICharacter()
@@ -13,13 +14,15 @@ ABCGJamAICharacter::ABCGJamAICharacter()
 	PrimaryActorTick.bCanEverTick = false;
 	AutoPossessAI = EAutoPossessAI::Disabled;
 	AIControllerClass = ABCGJamAIController::StaticClass();
+
+	this->DamageComponent = CreateDefaultSubobject<UDamageActorComponent>("Damage Component");
 }
 
 // Called when the game starts or when spawned
 void ABCGJamAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	checkf(this->DamageComponent, TEXT("Damage component is nullptr"));
 }
 
 // Called to bind functionality to input

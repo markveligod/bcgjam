@@ -21,6 +21,7 @@ public:
 
 	void ChangeGameLevelState(EGameLevelState NewState);
 	FOnGameLevelStateChangedSignature GameLevelState;
+	FOnGameOverSignature OnGameOver;
 	
 protected:
 	virtual void StartPlay() override;
@@ -31,4 +32,5 @@ private:
 	EGameLevelState CurrentGameLevelState = EGameLevelState::WaitToStart;
 	
 	void SetupSettings();
+	void OnEndGame();
 };

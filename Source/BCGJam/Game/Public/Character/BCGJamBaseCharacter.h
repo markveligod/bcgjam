@@ -26,6 +26,8 @@ protected:
 		class USpringArmComponent* SpringArmComponent;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		class UCameraComponent* CameraComponent;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		class UHealthActorComponent* HealthComponent;
 
 	
 	// Called when the game starts or when spawned

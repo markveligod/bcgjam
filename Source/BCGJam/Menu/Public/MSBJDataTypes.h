@@ -28,8 +28,10 @@ enum class EGameLevelState : uint8
 {
     WaitToStart = 0,
     InProgress,
-    Pause
+    Pause,
+	GameOver
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnGameLevelStateChangedSignature, EGameLevelState);
 
+DECLARE_MULTICAST_DELEGATE(FOnGameOverSignature);
