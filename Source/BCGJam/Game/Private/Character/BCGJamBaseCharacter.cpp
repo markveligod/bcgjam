@@ -39,6 +39,7 @@ void ABCGJamBaseCharacter::BeginPlay()
 
 
 
+
 // Called every frame
 void ABCGJamBaseCharacter::Tick(float DeltaTime)
 {
@@ -52,27 +53,16 @@ void ABCGJamBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	if (PlayerInputComponent)
 	{
-		PlayerInputComponent->BindAxis("MoveForward", this, &ABCGJamBaseCharacter::OnMoveForward);
-		PlayerInputComponent->BindAxis("MoveRight", this, &ABCGJamBaseCharacter::OnMoveRight);
+		PlayerInputComponent->BindAxis("MoveUp", this, &ABCGJamBaseCharacter::MoveUpPlayer);
+		PlayerInputComponent->BindAxis("MoveRight", this, &ABCGJamBaseCharacter::MoveRightPlayer);
+		PlayerInputComponent->BindAxis("MoveDown", this, &ABCGJamBaseCharacter::MoveDownPlayer);
+		PlayerInputComponent->BindAxis("MoveLeft", this, &ABCGJamBaseCharacter::MoveLeftPlayer);
+
 		PlayerInputComponent->BindAction("Hide", IE_Pressed, this, &ABCGJamBaseCharacter::OnHiddenPlayer);
 		PlayerInputComponent->BindAction("MoveRun", IE_Pressed, this, &ABCGJamBaseCharacter::OnPressMoveRunPlayer);
 		PlayerInputComponent->BindAction("MoveRun", IE_Released, this, &ABCGJamBaseCharacter::OnRealMoveRunPlayer);
 		PlayerInputComponent->BindAction("TakeItem", IE_Released, this, &ABCGJamBaseCharacter::OnRealTakeItem);
 	}
-}
-
-void ABCGJamBaseCharacter::OnMoveForward(float Amount)
-{
-	if (Amount == 0.0f || this->bIsHiddenPlayerInItem)
-		return;
-	AddMovementInput(GetActorForwardVector(), Amount);
-}
-
-void ABCGJamBaseCharacter::OnMoveRight(float Amount)
-{
-	if (Amount == 0.0f || this->bIsHiddenPlayerInItem)
-		return;
-	AddMovementInput(GetActorRightVector(), Amount);
 }
 
 void ABCGJamBaseCharacter::OnHiddenPlayer()
@@ -93,6 +83,7 @@ void ABCGJamBaseCharacter::OnPressMoveRunPlayer()
 {
 	if (this->bIsHiddenPlayerInItem)
 		return;
+	this->bIsRun = true;
 	GetCharacterMovement()->MaxWalkSpeed = this->MaxSpeedRun;
 }
 
@@ -100,6 +91,7 @@ void ABCGJamBaseCharacter::OnRealMoveRunPlayer()
 {
 	if (this->bIsHiddenPlayerInItem)
 		return;
+	this->bIsRun = false;
 	GetCharacterMovement()->MaxWalkSpeed = this->DefaultValueMaxVelocity;
 }
 
@@ -107,5 +99,51 @@ void ABCGJamBaseCharacter::OnRealTakeItem()
 {
 	if (!this->bIsSomeItem)
 		return;
-	this->GameMode->OnTakeGameState.Broadcast(this);
+	PlayAnimMontage(this->TakeItemAnim);
+	DisableInput(GetWorld()->GetFirstPlayerController());
+	GetWorld()->GetTimerManager().SetTimer(this->TimerAnimationHandle, this, &ABCGJamBaseCharacter::ClearTimerAnim, this->InRateAnimTake, false);
 }
+
+void ABCGJamBaseCharacter::ClearTimerAnim()
+{
+	this->GameMode->OnTakeGameState.Broadcast(this);
+	GetWorld()->GetTimerManager().ClearTimer(this->TimerAnimationHandle);
+	EnableInput(GetWorld()->GetFirstPlayerController());
+}
+
+void ABCGJamBaseCharacter::MoveUpPlayer(float Amount)
+{
+	this->bIsMoveUp = Amount > 0.0f;
+	if (Amount == 0.0f || this->bIsMoveDown || this->bIsMoveLeft || this->bIsMoveRight || this->bIsHiddenPlayerInItem)
+		return;
+	GetMesh()->SetRelativeRotation(this->ForwardMove);
+	AddMovementInput(GetActorForwardVector(), Amount);
+}
+
+void ABCGJamBaseCharacter::MoveRightPlayer(float Amount)
+{
+	this->bIsMoveRight = Amount > 0.0f;
+	if (Amount == 0.0f || this->bIsMoveDown || this->bIsMoveUp || this->bIsMoveLeft || this->bIsHiddenPlayerInItem)
+		return;
+	GetMesh()->SetRelativeRotation(this->RightMove);
+	AddMovementInput(GetActorRightVector(), Amount);
+}
+
+void ABCGJamBaseCharacter::MoveDownPlayer(float Amount)
+{
+	this->bIsMoveDown = Amount < 0.0f;
+	if (Amount == 0.0f || this->bIsMoveRight || this->bIsMoveUp || this->bIsMoveLeft || this->bIsHiddenPlayerInItem)
+		return;
+	GetMesh()->SetRelativeRotation(this->BackMove);
+	AddMovementInput(GetActorForwardVector(), Amount);
+}
+
+void ABCGJamBaseCharacter::MoveLeftPlayer(float Amount)
+{
+	this->bIsMoveLeft = Amount < 0.0f;
+	if (Amount == 0.0f || this->bIsMoveRight || this->bIsMoveUp || this->bIsMoveDown || this->bIsHiddenPlayerInItem)
+		return;
+	GetMesh()->SetRelativeRotation(this->LeftMove);
+	AddMovementInput(GetActorRightVector(), Amount);
+}
+

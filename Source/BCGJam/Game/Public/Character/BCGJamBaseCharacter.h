@@ -37,6 +37,9 @@ public:
 	void AddNewItemToArray(AActor* NewItem) { this->ActorItems.Add(NewItem); }
 	void AddCountGold(int32 Value) { this->GoldValue += Value; }
 
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+		bool IsRun() const { return (this->bIsRun && !GetVelocity().IsZero()); }
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		class USpringArmComponent* SpringArmComponent;
@@ -45,31 +48,55 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		class UHealthActorComponent* HealthComponent;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Direction")
+	FRotator ForwardMove;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Direction")
+	FRotator BackMove;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Direction")
+	FRotator LeftMove;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Direction")
+	FRotator RightMove;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Speed run editor")
 		float MaxSpeedRun = 400.f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Anim")
+		class UAnimMontage* TakeItemAnim;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Anim")
+		float InRateAnimTake = 1.f;
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
 	int32 GoldValue = 0;
-	
 	AGameJamModeBase* GameMode;
-	
-	bool bIsSomeItem = false;
+
+	FTimerHandle TimerAnimationHandle;
+	void ClearTimerAnim();
 	
 	TArray<AActor*> ActorItems;
-	
+
+	bool bIsSomeItem = false;
 	bool bIsHideItemAround = false;
 	bool bIsHiddenPlayerInItem = false;
+	bool bIsRun = false;
 	
 	float DefaultValueMaxVelocity;
 	
-	void OnMoveForward(float Amount);
-	void OnMoveRight(float Amount);
 	void OnHiddenPlayer();
 	void OnPressMoveRunPlayer();
 	void OnRealMoveRunPlayer();
 	void OnRealTakeItem();
+
+	void MoveUpPlayer(float Amount);
+	void MoveRightPlayer(float Amount);
+	void MoveDownPlayer(float Amount);
+	void MoveLeftPlayer(float Amount);
+
+	bool bIsMoveUp = false;
+	bool bIsMoveDown = false;
+	bool bIsMoveRight = false;
+	bool bIsMoveLeft = false;
 	
 };
