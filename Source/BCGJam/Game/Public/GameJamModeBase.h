@@ -22,6 +22,7 @@ public:
 	void ChangeGameLevelState(EGameLevelState NewState);
 	FOnGameLevelStateChangedSignature GameLevelState;
 	FOnGameOverSignature OnGameOver;
+	FOnTakeGameStateSignature OnTakeGameState;
 	
 protected:
 	virtual void StartPlay() override;

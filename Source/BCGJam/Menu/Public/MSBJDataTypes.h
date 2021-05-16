@@ -35,3 +35,7 @@ enum class EGameLevelState : uint8
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnGameLevelStateChangedSignature, EGameLevelState);
 
 DECLARE_MULTICAST_DELEGATE(FOnGameOverSignature);
+
+class ABCGJamBaseCharacter;
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnTakeGameStateSignature, ABCGJamBaseCharacter*);
+

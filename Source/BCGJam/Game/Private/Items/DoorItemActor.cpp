@@ -43,6 +43,7 @@ void ADoorItemActor::CharacterBeginOverlapDoor(UPrimitiveComponent* OverlappedCo
 		if (TempCharacter)
 		{
 			const auto ArrayActorItems = TempCharacter->GetAllActorItems();
+			UE_LOG(LogDoorItemActor, Display, TEXT("Array Item count %d"), ArrayActorItems.Num());
 			for (auto Item : ArrayActorItems)
 			{
 				if (Item == this->Key)

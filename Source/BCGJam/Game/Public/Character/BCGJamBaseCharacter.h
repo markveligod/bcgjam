@@ -30,7 +30,13 @@ public:
 	bool GetIsDead() const { return(this->HealthComponent->GetIsDead()); }
 
 	TArray<AActor*> GetAllActorItems() const { return (this->ActorItems); }
-	
+
+	void SetSomeItem(bool State) { this->bIsSomeItem = State; }
+	bool GetSomeItem() const { return (this->bIsSomeItem); }
+
+	void AddNewItemToArray(AActor* NewItem) { this->ActorItems.Add(NewItem); }
+	void AddCountGold(int32 Value) { this->GoldValue += Value; }
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		class USpringArmComponent* SpringArmComponent;
@@ -42,11 +48,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Speed run editor")
 		float MaxSpeedRun = 400.f;
 
-	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
+	int32 GoldValue = 0;
+	
+	AGameJamModeBase* GameMode;
+	
+	bool bIsSomeItem = false;
+	
 	TArray<AActor*> ActorItems;
 	
 	bool bIsHideItemAround = false;
@@ -59,5 +70,6 @@ private:
 	void OnHiddenPlayer();
 	void OnPressMoveRunPlayer();
 	void OnRealMoveRunPlayer();
+	void OnRealTakeItem();
 	
 };

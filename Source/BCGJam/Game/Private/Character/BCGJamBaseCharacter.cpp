@@ -6,6 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Game/Public/Character/Components/HealthActorComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Game/Public/GameJamModeBase.h"
 
 // Sets default values
 ABCGJamBaseCharacter::ABCGJamBaseCharacter()
@@ -29,7 +30,9 @@ void ABCGJamBaseCharacter::BeginPlay()
 	checkf(this->SpringArmComponent, TEXT("Spring arm is nullptr"));
 	checkf(this->CameraComponent, TEXT("Camera is nullptr"));
 	checkf(this->HealthComponent, TEXT("Health Component is nullptr"));
-
+	checkf(GetWorld(), TEXT("World is nullptr"));
+	this->GameMode = Cast<AGameJamModeBase>(GetWorld()->GetAuthGameMode());
+	checkf(this->GameMode, TEXT("Game mode is nullptr"));
 	this->DefaultValueMaxVelocity = GetCharacterMovement()->GetMaxSpeed();
 
 }
@@ -54,6 +57,7 @@ void ABCGJamBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 		PlayerInputComponent->BindAction("Hide", IE_Pressed, this, &ABCGJamBaseCharacter::OnHiddenPlayer);
 		PlayerInputComponent->BindAction("MoveRun", IE_Pressed, this, &ABCGJamBaseCharacter::OnPressMoveRunPlayer);
 		PlayerInputComponent->BindAction("MoveRun", IE_Released, this, &ABCGJamBaseCharacter::OnRealMoveRunPlayer);
+		PlayerInputComponent->BindAction("TakeItem", IE_Released, this, &ABCGJamBaseCharacter::OnRealTakeItem);
 	}
 }
 
@@ -97,4 +101,11 @@ void ABCGJamBaseCharacter::OnRealMoveRunPlayer()
 	if (this->bIsHiddenPlayerInItem)
 		return;
 	GetCharacterMovement()->MaxWalkSpeed = this->DefaultValueMaxVelocity;
+}
+
+void ABCGJamBaseCharacter::OnRealTakeItem()
+{
+	if (!this->bIsSomeItem)
+		return;
+	this->GameMode->OnTakeGameState.Broadcast(this);
 }
