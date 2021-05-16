@@ -28,6 +28,8 @@ public:
 
 	bool GetHiddenInItem() const { return (this->bIsHiddenPlayerInItem); }
 	bool GetIsDead() const { return(this->HealthComponent->GetIsDead()); }
+
+	TArray<AActor*> GetAllActorItems() const { return (this->ActorItems); }
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
@@ -45,6 +47,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	TArray<AActor*> ActorItems;
+	
 	bool bIsHideItemAround = false;
 	bool bIsHiddenPlayerInItem = false;
 	

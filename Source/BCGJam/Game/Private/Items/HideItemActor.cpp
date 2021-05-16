@@ -28,7 +28,8 @@ AHideItemActor::AHideItemActor()
 void AHideItemActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	checkf(this->StaticMesh, TEXT("Static Mesh is nullptr"));
+	checkf(this->BoxTrigger, TEXT("Box trigger is nullptr"));
 }
 
 void AHideItemActor::CharacterIsAround(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
