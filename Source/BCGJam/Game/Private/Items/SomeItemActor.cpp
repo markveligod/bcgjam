@@ -43,6 +43,7 @@ void ASomeItemActor::AddItemToArray(ABCGJamBaseCharacter* TempCharacter)
 	{
 		TempCharacter->AddCountGold(this->GoldValue);
 		TempCharacter->AddNewItemToArray(this);
+		TempCharacter->SetSomeItem(false);
 		SetActorHiddenInGame(true);
 		this->BoxTrigger->OnComponentBeginOverlap.Clear();
 		this->BoxTrigger->OnComponentEndOverlap.Clear();

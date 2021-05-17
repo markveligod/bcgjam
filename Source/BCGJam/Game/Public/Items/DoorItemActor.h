@@ -19,6 +19,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void Tick(float DeltaSeconds) override;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		class UStaticMeshComponent* StaticMesh;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
@@ -26,10 +28,20 @@ protected:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Key")
 		AActor* Key;
-	
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Door")
+		float DistTheDoor = 80.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Door")
+		float PowerTheDoor = 0.5f;
 	
 private:
 	bool bIsOpenDoor = false;
+
+	float StartLocalTheDoor;
+	float TempLocalTheDoor;
+	float EndLocalTheDoor;
+
+	void StartOpenTheDoor(float Delta);
 	
 	UFUNCTION()
 		void CharacterBeginOverlapDoor(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -38,3 +50,4 @@ private:
 		void CharacterEndOverlapDoor(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 };
+
