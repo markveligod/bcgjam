@@ -6,9 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "HealthActorComponent.generated.h"
 
-
-class AGameJamModeBase;
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BCGJAM_API UHealthActorComponent : public UActorComponent
 {
@@ -28,8 +25,12 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Anim")
+		class UAnimMontage* DeathPlayer;
+	
 private:
-	AGameJamModeBase* GameMode;
+	class ABCGJamBaseCharacter* Character;
+	class AGameJamModeBase* GameMode;
 	
 	int32 HealthValue = 3;
 	bool IsDead = false;

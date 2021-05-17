@@ -65,6 +65,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Anim")
 		float InRateAnimTake = 1.f;
 	
+	
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

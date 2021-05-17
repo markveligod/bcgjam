@@ -22,6 +22,9 @@ public:
 	class UBehaviorTree* BTreeAICharacter;
 
 	FVector NextTargetPointLocation();
+
+	UFUNCTION(BlueprintCallable)
+		bool GetIsWalk() const { return(this->bIsWalk); }
 protected:
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Target")
 	TArray<class ABCGJamAITargetPoint*> GeneralTargetPoints;
@@ -29,10 +32,19 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		class UDamageActorComponent* DamageComponent;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Speed")
+		float MaxSpeedRun = 350.f;
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+	
 
 private:
+	float DefaultSpeedWalk;
+	class ABCGJamAIController* Controller;
+	bool bIsWalk = false;
+	
 	int32 CurrentPoint = 0;
 	bool IsRevers = false;
 };

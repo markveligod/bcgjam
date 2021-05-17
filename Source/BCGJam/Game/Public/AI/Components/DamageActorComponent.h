@@ -28,8 +28,20 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Param Editor")
 		int32 DamageCount = 1;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Anim")
+		class UAnimMontage* AttackAnim;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Anim")
+		float InRateAnimAttack = 1.f;
+
 
 private:
+	class ABCGJamAICharacter* AICharacter;
+	class ABCGJamBaseCharacter* TempCharacter;
+	class UHealthActorComponent* HealthComp;
+	FTimerHandle TimerHandleAttack;
+
+	void TryAttackToCharacter();
+	
 	UFUNCTION()
 		void OnDamageImpulse(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	

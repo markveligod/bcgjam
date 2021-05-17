@@ -15,6 +15,9 @@ class BCGJAM_API ABCGJamAIController : public AAIController
 	GENERATED_BODY()
 public:
 	ABCGJamAIController();
+
+	UFUNCTION(BlueprintCallable)
+		bool GetIsEnemy() const { return (this->bIsEnemy); }
 	
 protected:
 
@@ -44,6 +47,6 @@ protected:
 		FName KeyEnemyBlackboard = "PlayerActor";
 	
 private:
-	
+	bool bIsEnemy = false;
 };
 

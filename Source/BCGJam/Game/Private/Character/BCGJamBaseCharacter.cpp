@@ -81,7 +81,7 @@ void ABCGJamBaseCharacter::OnHiddenPlayer()
 
 void ABCGJamBaseCharacter::OnPressMoveRunPlayer()
 {
-	if (this->bIsHiddenPlayerInItem)
+	if (this->bIsHiddenPlayerInItem || this->HealthComponent->GetIsDead())
 		return;
 	this->bIsRun = true;
 	GetCharacterMovement()->MaxWalkSpeed = this->MaxSpeedRun;
@@ -89,7 +89,7 @@ void ABCGJamBaseCharacter::OnPressMoveRunPlayer()
 
 void ABCGJamBaseCharacter::OnRealMoveRunPlayer()
 {
-	if (this->bIsHiddenPlayerInItem)
+	if (this->bIsHiddenPlayerInItem || this->HealthComponent->GetIsDead())
 		return;
 	this->bIsRun = false;
 	GetCharacterMovement()->MaxWalkSpeed = this->DefaultValueMaxVelocity;
@@ -97,7 +97,7 @@ void ABCGJamBaseCharacter::OnRealMoveRunPlayer()
 
 void ABCGJamBaseCharacter::OnRealTakeItem()
 {
-	if (!this->bIsSomeItem)
+	if (!this->bIsSomeItem || this->HealthComponent->GetIsDead())
 		return;
 	PlayAnimMontage(this->TakeItemAnim);
 	DisableInput(GetWorld()->GetFirstPlayerController());
@@ -114,7 +114,7 @@ void ABCGJamBaseCharacter::ClearTimerAnim()
 void ABCGJamBaseCharacter::MoveUpPlayer(float Amount)
 {
 	this->bIsMoveUp = Amount > 0.0f;
-	if (Amount == 0.0f || this->bIsMoveDown || this->bIsMoveLeft || this->bIsMoveRight || this->bIsHiddenPlayerInItem)
+	if (Amount == 0.0f || this->bIsMoveDown || this->bIsMoveLeft || this->bIsMoveRight || this->bIsHiddenPlayerInItem || this->HealthComponent->GetIsDead())
 		return;
 	GetMesh()->SetRelativeRotation(this->ForwardMove);
 	AddMovementInput(GetActorForwardVector(), Amount);
@@ -123,7 +123,7 @@ void ABCGJamBaseCharacter::MoveUpPlayer(float Amount)
 void ABCGJamBaseCharacter::MoveRightPlayer(float Amount)
 {
 	this->bIsMoveRight = Amount > 0.0f;
-	if (Amount == 0.0f || this->bIsMoveDown || this->bIsMoveUp || this->bIsMoveLeft || this->bIsHiddenPlayerInItem)
+	if (Amount == 0.0f || this->bIsMoveDown || this->bIsMoveUp || this->bIsMoveLeft || this->bIsHiddenPlayerInItem || this->HealthComponent->GetIsDead())
 		return;
 	GetMesh()->SetRelativeRotation(this->RightMove);
 	AddMovementInput(GetActorRightVector(), Amount);
@@ -132,7 +132,7 @@ void ABCGJamBaseCharacter::MoveRightPlayer(float Amount)
 void ABCGJamBaseCharacter::MoveDownPlayer(float Amount)
 {
 	this->bIsMoveDown = Amount < 0.0f;
-	if (Amount == 0.0f || this->bIsMoveRight || this->bIsMoveUp || this->bIsMoveLeft || this->bIsHiddenPlayerInItem)
+	if (Amount == 0.0f || this->bIsMoveRight || this->bIsMoveUp || this->bIsMoveLeft || this->bIsHiddenPlayerInItem || this->HealthComponent->GetIsDead())
 		return;
 	GetMesh()->SetRelativeRotation(this->BackMove);
 	AddMovementInput(GetActorForwardVector(), Amount);
@@ -141,7 +141,7 @@ void ABCGJamBaseCharacter::MoveDownPlayer(float Amount)
 void ABCGJamBaseCharacter::MoveLeftPlayer(float Amount)
 {
 	this->bIsMoveLeft = Amount < 0.0f;
-	if (Amount == 0.0f || this->bIsMoveRight || this->bIsMoveUp || this->bIsMoveDown || this->bIsHiddenPlayerInItem)
+	if (Amount == 0.0f || this->bIsMoveRight || this->bIsMoveUp || this->bIsMoveDown || this->bIsHiddenPlayerInItem || this->HealthComponent->GetIsDead())
 		return;
 	GetMesh()->SetRelativeRotation(this->LeftMove);
 	AddMovementInput(GetActorRightVector(), Amount);

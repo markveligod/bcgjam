@@ -8,6 +8,7 @@
 #include "Game/Public/AI/BCGJamAICharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Game/Public/AI/BCGJamAICharacter.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogDamageComponent, All, All);
 
@@ -31,27 +32,39 @@ void UDamageActorComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	checkf(this->BoxComponent, TEXT("Box component is nullptr"));
-	
+	this->AICharacter = Cast<ABCGJamAICharacter>(GetOwner());
+	checkf(this->AICharacter, TEXT("AICharacter is nullptr"));
+}
+
+void UDamageActorComponent::TryAttackToCharacter()
+{
+	if (HealthComp)
+	{
+		for (int32 i = 0; i < this->DamageCount; i++)
+			HealthComp->DecreaseHealthValue();
+		UE_LOG(LogDamageComponent, Display, TEXT("Vector Forward %s"), *GetOwner()->GetActorForwardVector().ToString());
+		FVector TempForwardVector = GetOwner()->GetActorForwardVector();
+		TempForwardVector.X *= this->ImpulseForce;
+		TempForwardVector.Y *= this->ImpulseForce;
+		TempForwardVector.Z += this->ImpulseForce;
+		TempCharacter->GetCharacterMovement()->AddImpulse(TempForwardVector * 1000.f);
+	}
+	GetWorld()->GetTimerManager().ClearTimer(this->TimerHandleAttack);
 }
 
 void UDamageActorComponent::OnDamageImpulse(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor && OtherActor->IsA(ABCGJamBaseCharacter::StaticClass()))
 	{
+		
 		UE_LOG(LogDamageComponent, Display, TEXT("Impulse actor overlap: %s"), *OtherActor->GetName());
-		const auto TempCharacter = Cast<ABCGJamBaseCharacter>(OtherActor);
-		const auto HealthComp = TempCharacter->FindComponentByClass<UHealthActorComponent>();
-		if (HealthComp)
+		this->TempCharacter = Cast<ABCGJamBaseCharacter>(OtherActor);
+		this->HealthComp = TempCharacter->FindComponentByClass<UHealthActorComponent>();
+		if (this->TempCharacter && this->HealthComp && !this->TempCharacter->GetIsDead())
 		{
-			for (int32 i = 0; i < this->DamageCount; i++)
-				HealthComp->DecreaseHealthValue();
-			UE_LOG(LogDamageComponent, Display, TEXT("Vector Forward %s"), *GetOwner()->GetActorForwardVector().ToString());
-			FVector TempForwardVector = GetOwner()->GetActorForwardVector();
-			TempForwardVector.X *= this->ImpulseForce;
-			TempForwardVector.Y *= this->ImpulseForce;
-			TempForwardVector.Z += this->ImpulseForce;
-			TempCharacter->GetCharacterMovement()->AddImpulse(TempForwardVector * 1000.f);
+			GetWorld()->GetTimerManager().SetTimer(this->TimerHandleAttack, this, &UDamageActorComponent::TryAttackToCharacter, this->InRateAnimAttack, false);
+			this->AICharacter->PlayAnimMontage(this->AttackAnim);
 		}
 	}
 }
