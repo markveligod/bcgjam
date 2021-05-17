@@ -68,6 +68,9 @@ protected:
 		class UAnimMontage* TakeItemAnim;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Anim")
 		float InRateAnimTake = 1.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+		class USoundCue* PlayMoney;
 	
 	
 	

@@ -77,6 +77,7 @@ void ADoorItemActor::CharacterBeginOverlapDoor(UPrimitiveComponent* OverlappedCo
 					this->bIsOpenDoor = true;
 					this->BoxTrigger->OnComponentBeginOverlap.Clear();
 					this->BoxTrigger->OnComponentEndOverlap.Clear();
+					this->bIsOpen = true;
 					return;
 				}
 			}
