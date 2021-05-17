@@ -32,8 +32,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
 		class USoundCue* PlayFanFar;
 
+	
+	
 private:
 	bool bIsCharacterOverlap = false;
+
 	class AGameJamModeBase* GameMode;
 
 	void AddItemToArray(class ABCGJamBaseCharacter* TempCharacter);
