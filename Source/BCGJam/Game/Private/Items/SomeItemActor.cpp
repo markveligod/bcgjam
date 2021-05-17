@@ -6,6 +6,8 @@
 #include "Components/BoxComponent.h"
 #include "Game/Public/Character/BCGJamBaseCharacter.h"
 #include "Game/Public/GameJamModeBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSomeItemActor, All, All);
 
@@ -41,6 +43,8 @@ void ASomeItemActor::AddItemToArray(ABCGJamBaseCharacter* TempCharacter)
 {
 	if (this->bIsCharacterOverlap)
 	{
+		if (this->IsKey)
+			UGameplayStatics::PlaySound2D(GetWorld(), this->PlayFanFar);
 		TempCharacter->AddCountGold(this->GoldValue);
 		TempCharacter->AddNewItemToArray(this);
 		TempCharacter->SetSomeItem(false);
