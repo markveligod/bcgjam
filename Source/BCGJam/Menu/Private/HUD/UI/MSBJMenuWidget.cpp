@@ -36,7 +36,7 @@ void UMSBJMenuWidget::OnStartGame()
 	if (!GetWorld())
 		return;
 	PlayAnimation(this->EndAnimation);
-	UGameplayStatics::OpenLevel(GetWorld(), this->GameInst->NameStartLevel);
+	UGameplayStatics::OpenLevel(GetWorld(), this->GameInst->NameLevelOne);
 }
 
 void UMSBJMenuWidget::OnOptionsGame()

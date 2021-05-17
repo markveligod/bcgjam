@@ -18,7 +18,7 @@ class BCGJAM_API AGameJamModeBase : public AGameModeBase
 	GENERATED_BODY()
 public:
 	AGameJamModeBase();
-
+	UFUNCTION(BlueprintCallable)
 	void ChangeGameLevelState(EGameLevelState NewState);
 	FOnGameLevelStateChangedSignature GameLevelState;
 	FOnGameOverSignature OnGameOver;

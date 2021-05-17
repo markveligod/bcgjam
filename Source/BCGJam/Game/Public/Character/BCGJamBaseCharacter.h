@@ -35,8 +35,12 @@ public:
 	bool GetSomeItem() const { return (this->bIsSomeItem); }
 
 	void AddNewItemToArray(AActor* NewItem) { this->ActorItems.Add(NewItem); }
+
 	void AddCountGold(int32 Value) { this->GoldValue += Value; }
 
+	UFUNCTION(BlueprintCallable)
+		int32 GetCountGold() const { return (this->GoldValue); }
+	
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 		bool IsRun() const { return (this->bIsRun && !GetVelocity().IsZero()); }
 

@@ -22,7 +22,9 @@ class BCGJAM_API UMSBJGameInstance : public UGameInstance
 	
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Levels Editor")
-		FName NameStartLevel = NAME_None;
+		FName NameLevelOne = NAME_None;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Levels Editor")
+		FName NameLevelTwo = NAME_None;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Levels Editor")
 		FName NameMenuLevel = NAME_None;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Volume Editor")
