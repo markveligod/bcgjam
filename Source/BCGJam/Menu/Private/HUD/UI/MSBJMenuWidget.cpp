@@ -12,16 +12,18 @@
 #include "Menu/MenuSystemByJamGameModeBase.h"
 #include "Menu/Public/MSBJGameInstance.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Components/Image.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogMSBJMenuWidget, All, All);
 
 void UMSBJMenuWidget::NativeOnInitialized()
 {
-	if (!this->StartGameButton || !this->OptionsButton || !this->CreditsButton || !this->QuitButton)
-	{
-		UE_LOG(LogMSBJMenuWidget, Error, TEXT("Button is nullptr"));
-		return;
-	}
+	
+	this->GameMode = GetCurrentGameMode();
+	this->GameInst = Cast<UMSBJGameInstance>(GetWorld()->GetGameInstance());
+	
+	this->BackGround->SetBrushFromTexture(this->ImagesArray[FMath::RandRange(0, (this->ImagesArray.Num() - 1))]);
+	this->BackGround->SetBrushSize(FVector2D(this->GameInst->GetScreenViewport().X, this->GameInst->GetScreenViewport().Y));
 
 	this->StartGameButton->OnClicked.AddDynamic(this, &UMSBJMenuWidget::OnStartGame);
 	this->OptionsButton->OnClicked.AddDynamic(this, &UMSBJMenuWidget::OnOptionsGame);
@@ -33,36 +35,22 @@ void UMSBJMenuWidget::OnStartGame()
 {
 	if (!GetWorld())
 		return;
-	const auto GameInst = Cast<UMSBJGameInstance>(GetWorld()->GetGameInstance());
 	PlayAnimation(this->EndAnimation);
-	UGameplayStatics::OpenLevel(GetWorld(), GameInst->NameStartLevel);
+	UGameplayStatics::OpenLevel(GetWorld(), this->GameInst->NameStartLevel);
 }
 
 void UMSBJMenuWidget::OnOptionsGame()
 {
-	const auto GameMode = GetCurrentGameMode();
-	if (!GameMode)
-	{
-		UE_LOG(LogMSBJMenuWidget, Error, TEXT("Game mode is nullptr"));
-		return;
-	}
-	GameMode->SetGameState(EMSBJGameMenuState::Options);
+	this->GameMode->SetGameState(EMSBJGameMenuState::Options);
 }
 
 void UMSBJMenuWidget::OnCreditsGame()
 {
-	const auto GameMode = GetCurrentGameMode();
-	if (!GameMode)
-	{
-		UE_LOG(LogMSBJMenuWidget, Error, TEXT("Game mode is nullptr"));
-		return;
-	}
-	GameMode->SetGameState(EMSBJGameMenuState::Credits);
+	this->GameMode->SetGameState(EMSBJGameMenuState::Credits);
 }
 
 void UMSBJMenuWidget::OnQuitGame()
 {
 	PlayAnimation(this->EndAnimation);
 	UKismetSystemLibrary::QuitGame(this, GetOwningPlayer(), EQuitPreference::Quit, true);
-	UE_LOG(LogMSBJMenuWidget, Display, TEXT("Goodbye!"));
 }

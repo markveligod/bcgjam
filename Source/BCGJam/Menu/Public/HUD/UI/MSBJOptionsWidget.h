@@ -20,6 +20,7 @@ class USoundClass;
 class UMSBJGameInstance;
 class UGameUserSettings;
 class AMenuSystemByJamGameModeBase;
+class UImage;
 
 /**
  * 
@@ -33,6 +34,12 @@ public:
 
 
 protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fon")
+		TArray<UTexture2D*> ImagesArray;
+
+	UPROPERTY(meta = (BindWidget))
+		UImage* BackGround;
+	
 	UPROPERTY(meta = (BindWidget))
 		USlider* MusicSlider;
 	UPROPERTY(meta = (BindWidget))

@@ -16,6 +16,7 @@
 #include "GameFramework/GameUserSettings.h"
 #include "Kismet/KismetInternationalizationLibrary.h"
 #include "Sound/SoundClass.h"
+#include "Components/Image.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogMSBJOptionsWidget, All, All);
 
@@ -30,6 +31,10 @@ void UMSBJOptionsWidget::NativeOnInitialized()
 	checkf(this->GameInst, TEXT("Game Instance is nullptr"));
 	checkf(this->UserSettings, TEXT("User settings is nullptr"));
 	checkf(this->GameMode, TEXT("Game mode is nullptr"));
+
+	this->BackGround->SetBrushFromTexture(this->ImagesArray[FMath::RandRange(0, (this->ImagesArray.Num() - 1))]);
+	this->BackGround->SetBrushSize(FVector2D(this->GameInst->GetScreenViewport().X, this->GameInst->GetScreenViewport().Y));
+
 	
 	//delegate join
 	this->MusicSlider->OnValueChanged.AddDynamic(this, &UMSBJOptionsWidget::OnChangedMusicSlider);

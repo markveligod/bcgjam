@@ -13,6 +13,7 @@
 #include "MSBJMenuWidget.generated.h"
 
 class UButton;
+class UImage;
 /**
  * 
  */
@@ -22,6 +23,12 @@ class BCGJAM_API UMSBJMenuWidget : public UMSBJBaseWidget
 	GENERATED_BODY()
 
 protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fon")
+		TArray<UTexture2D*> ImagesArray;
+
+	UPROPERTY(meta = (BindWidget))
+		UImage* BackGround;
+	
 	UPROPERTY(meta = (BindWidget))
 		UButton* StartGameButton;
 
@@ -39,6 +46,9 @@ protected:
 
 	virtual void NativeOnInitialized() override;
 private:
+	class UMSBJGameInstance* GameInst;
+	class AMenuSystemByJamGameModeBase* GameMode;
+	
 	UFUNCTION()
 		void OnStartGame();
 

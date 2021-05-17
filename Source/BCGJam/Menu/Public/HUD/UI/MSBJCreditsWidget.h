@@ -13,6 +13,7 @@
 #include "MSBJCreditsWidget.generated.h"
 
 class UButton;
+class UImage;
 /**
  * 
  */
@@ -21,12 +22,19 @@ class BCGJAM_API UMSBJCreditsWidget : public UMSBJBaseWidget
 {
 	GENERATED_BODY()
 protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fon")
+		TArray<UTexture2D*> ImagesArray;
+
+	UPROPERTY(meta = (BindWidget))
+		UImage* BackGround;
+	
 	UPROPERTY(meta = (BindWidget))
 		UButton* BackButton;
 
 	virtual void NativeOnInitialized() override;
 
 private:
+	class UMSBJGameInstance* GameInst;
 	UFUNCTION()
 		void OnComeBack();
 };
