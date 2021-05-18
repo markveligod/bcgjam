@@ -14,7 +14,7 @@ class BCGJAM_API ADoorItemActor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ADoorItemActor();
-
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -29,14 +29,18 @@ protected:
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Key")
 		AActor* Key;
 
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Key")
+		FText DialogText;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Door")
 		float DistTheDoor = 80.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Door")
 		float PowerTheDoor = 0.5f;
-	
+	UFUNCTION(BlueprintCallable)
+		bool GetIsOpen() const { return (this->bIsOpen); }
 private:
 	bool bIsOpenDoor = false;
-
+	bool bIsOpen = false;
 	float StartLocalTheDoor;
 	float TempLocalTheDoor;
 	float EndLocalTheDoor;

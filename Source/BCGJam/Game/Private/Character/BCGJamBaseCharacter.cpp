@@ -7,6 +7,8 @@
 #include "Game/Public/Character/Components/HealthActorComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Game/Public/GameJamModeBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 ABCGJamBaseCharacter::ABCGJamBaseCharacter()
@@ -101,6 +103,7 @@ void ABCGJamBaseCharacter::OnRealTakeItem()
 		return;
 	PlayAnimMontage(this->TakeItemAnim);
 	DisableInput(GetWorld()->GetFirstPlayerController());
+	UGameplayStatics::PlaySound2D(GetWorld(), this->PlayMoney);
 	GetWorld()->GetTimerManager().SetTimer(this->TimerAnimationHandle, this, &ABCGJamBaseCharacter::ClearTimerAnim, this->InRateAnimTake, false);
 }
 
